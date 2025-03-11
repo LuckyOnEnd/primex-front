@@ -1,7 +1,7 @@
-import React from "react";
-import {FaHome, FaCogs, FaSignOutAlt, FaFileAlt} from "react-icons/fa";
-import { List, ListItem, ListItemPrefix, Card } from "@material-tailwind/react";
-import { useNavigate } from "react-router";
+import { Card, List, ListItem, ListItemPrefix } from "@material-tailwind/react"
+import React from "react"
+import { FaCogs, FaFileAlt, FaHome, FaSignOutAlt } from "react-icons/fa"
+import { useNavigate } from "react-router"
 
 function SideBar() {
   const navigate = useNavigate();
@@ -21,7 +21,7 @@ function SideBar() {
           <List className="mt-6">
             <ListItem
                 className="hover:bg-gray-800 rounded-lg"
-                onClick={() => navigate("/home")}
+                onClick={() => navigate("/")}
             >
               <ListItemPrefix>
                 <FaHome className="text-black text-xl" />

@@ -1,15 +1,15 @@
-import React, { useState } from "react";
-import { Form, Input, Button } from "antd";
-import { Card } from "@material-tailwind/react";
-import { useNavigate } from "react-router-dom";
-import { Message } from "../components/index.js";
+import { Card } from "@material-tailwind/react"
+import { Button, Form, Input } from "antd"
+import React, { useState } from "react"
+import { useNavigate } from "react-router-dom"
+import { Message } from "../components/index.js"
 
 const AuthPage = () => {
     const navigate = useNavigate();
     const [alert, setAlert] = useState(null);
 
     const onFinish = (values) => {
-        const apiUrl = "http://localhost:8000/api/auth";
+        const apiUrl = "https://api.primexalgo.com/api/auth";
 
         fetch(apiUrl, {
             method: "POST",
@@ -27,6 +27,7 @@ const AuthPage = () => {
             .then((data) => {
                 if (data.token) {
                     localStorage.setItem("token", data.token);
+                    localStorage.setItem("role", data.subscription_type)
                     setAlert({ message: "Success", description: "Login successful", type: "success" });
                     setTimeout(() => navigate("/"), 200);
                 } else {

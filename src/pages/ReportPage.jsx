@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from "react";
-import "react-datepicker/dist/react-datepicker.css";
-import { Listbox } from "@headlessui/react";
-import { Button } from "@material-tailwind/react";
-import { Message } from "../components/index.js";
+import { Listbox } from "@headlessui/react"
+import { Button } from "@material-tailwind/react"
+import React, { useEffect, useState } from "react"
+import "react-datepicker/dist/react-datepicker.css"
+import { Message } from "../components/index.js"
 
 export default function ReportPage() {
     const [selectedPeriod, setSelectedPeriod] = useState("Today");
@@ -35,7 +35,7 @@ export default function ReportPage() {
 
     const generate = (values) => {
         const token = localStorage.getItem("token");
-        const apiUrl = "http://localhost:8000/api/report";
+        const apiUrl = "https://api.primexalgo.com/api/report";
 
         fetch(apiUrl, {
             method: "POST",

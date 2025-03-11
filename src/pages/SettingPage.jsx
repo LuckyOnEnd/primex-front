@@ -1,27 +1,27 @@
-import React, { useState, useEffect } from "react";
-import { Radio, Form, Input } from "antd";
 import {
   Button,
   Card,
   CardBody,
   CardHeader,
   Typography,
-} from "@material-tailwind/react";
-import { Message } from "../components";
-import { useNavigate } from "react-router";
+} from "@material-tailwind/react"
+import { Form, Input, Radio } from "antd"
+import React, { useEffect, useState } from "react"
+import { useNavigate } from "react-router"
+import { Message } from "../components"
 
 const SettingPage = () => {
   const navigate = useNavigate();
   const [data, setData] = useState({});
   const [alert, setAlert] = useState(null);
   const [showNotification, setShowNotification] = useState(false);
-
+  const role = localStorage.getItem('role')
   useEffect(() => {
     const fetchData = async () => {
       try {
         const token = localStorage.getItem("token");
 
-        const response = await fetch("http://localhost:8000/api/getkeys", {
+        const response = await fetch("https://api.primexalgo.com/api/getkeys", {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -55,7 +55,7 @@ const SettingPage = () => {
 
     const token = localStorage.getItem("token");
 
-    const apiUrl = "http://localhost:8000/api/postkey";
+    const apiUrl = "https://api.primexalgo.com/api/postkey";
     fetch(apiUrl, {
       method: "POST",
       headers: {
@@ -101,8 +101,9 @@ const SettingPage = () => {
     setData({
       api_key: "",
       api_sec: "",
-      type: "spot",
-      amount: 500,
+      type: "",
+      amount: 0,
+      signal_type: "",
       trading_view_login: "",
       trading_view_password: "",
       trading_view_chart_link: ""
@@ -161,6 +162,7 @@ const SettingPage = () => {
                         api_sec: data.api_sec,
                         type: data.type,
                         amount: data.amount,
+                        signal_type: data.signal_type,
                         trading_view_login: data.trading_view_login,
                         trading_view_password: data.trading_view_password,
                         trading_view_chart_link: data.trading_view_chart_link,
@@ -215,7 +217,7 @@ const SettingPage = () => {
                     >
                       <Input className="p-2 border-black" />
                     </Form.Item>
-
+                    
                     <Form.Item
                         label={<span className="text-black">Trade Type</span>}
                         name="type"
@@ -229,44 +231,64 @@ const SettingPage = () => {
                         </Radio>
                       </Radio.Group>
                     </Form.Item>
-                    <Form.Item
-                        label={<span className="text-black">TradingView Id</span>}
-                        name="trading_view_login"
-                        rules={[
-                          {
-                            required: true,
-                            message: "Please input your TradingView Id",
-                          },
-                        ]}
-                    >
-                      <Input className="p-2 border-black" />
-                    </Form.Item>
 
-                    <Form.Item
-                        label={<span className="text-black">TradingView Password</span>}
-                        name="trading_view_password"
-                        rules={[
-                          {
-                            required: true,
-                            message: "Please input your TradingView Password",
-                          },
-                        ]}
-                    >
-                      <Input className="p-2 border-black" />
-                    </Form.Item>
+                    {role === 'role' && (
+                       <Form.Item
+                       label={<span className="text-black">Signal Type</span>}
+                       name="signal_type"
+                       >
+                        <Radio.Group className="text-black">
+                          <Radio value="server" className="text-black">
+                            From Server
+                          </Radio>
+                          <Radio value="manual" className="text-black">
+                            Manual
+                          </Radio>
+                        </Radio.Group>
+                      </Form.Item>
+                    )}
+                   {role !== 'essential' && (
+                    <>
+                      <Form.Item
+                          label={<span className="text-black">TradingView Id</span>}
+                          name="trading_view_login"
+                          rules={[
+                            {
+                              required: true,
+                              message: "Please input your TradingView Id",
+                            },
+                          ]}
+                      >
+                        <Input className="p-2 border-black" />
+                      </Form.Item>
 
-                    <Form.Item
-                        label={<span className="text-black">TradingView Chart link</span>}
-                        name="trading_view_chart_link"
-                        rules={[
-                          {
-                            required: true,
-                            message: "Please input Chart link",
-                          },
-                        ]}
-                    >
-                      <Input className="p-2 border-black" />
-                    </Form.Item>
+                      <Form.Item
+                          label={<span className="text-black">TradingView Password</span>}
+                          name="trading_view_password"
+                          rules={[
+                            {
+                              required: true,
+                              message: "Please input your TradingView Password",
+                            },
+                          ]}
+                      >
+                        <Input className="p-2 border-black" />
+                      </Form.Item>
+
+                      <Form.Item
+                          label={<span className="text-black">TradingView Chart link</span>}
+                          name="trading_view_chart_link"
+                          rules={[
+                            {
+                              required: true,
+                              message: "Please input Chart link",
+                            },
+                          ]}
+                      >
+                        <Input className="p-2 border-black" />
+                      </Form.Item>
+                      </>
+                   )}
 
                     <Form.Item label={null}>
                       <Button type="primary" htmlType="submit">

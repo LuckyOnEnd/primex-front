@@ -1,23 +1,20 @@
-import { Route, Routes } from "react-router-dom";
-import "./App.css";
-import HomeLayout from "./layout/HomeLayout";
-import HomePage from "./pages/HomePage";
-import SettingPage from "./pages/SettingPage";
-import AuthPage from "./pages/AuthPage.jsx";
-import ReportPage from "./pages/ReportPage.jsx";
+import { Route, Routes } from "react-router-dom"
+import "./App.css"
+import HomeLayout from './layout/HomeLayout.jsx'
+import AuthPage from "./pages/AuthPage.jsx"
+import HomePage from "./pages/HomePage"
+import ReportPage from "./pages/ReportPage.jsx"
+import SettingPage from "./pages/SettingPage"
 function App() {
   return (
-      <div className="bg-[#F4F5F5]">
-        <Routes>
-          <Route path="/" element={<HomeLayout />}>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/home" element={<HomePage />} />
-            <Route path="/auth" element={<AuthPage />} />
-            <Route path="/settings" element={<SettingPage />} />
-            <Route path="/report" element={<ReportPage />} />
-          </Route>
-        </Routes>
-      </div>
+    <Routes>
+        <Route path="/" element={<HomeLayout />}>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/auth" element={<AuthPage />} />
+          <Route path="/settings" element={<SettingPage />} />
+          <Route path="/report" element={<ReportPage />} />
+        </Route>
+    </Routes>
   );
 }
 

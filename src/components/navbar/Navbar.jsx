@@ -1,7 +1,7 @@
-import React, { useState } from "react";
-import { FaHome, FaCogs, FaBars } from "react-icons/fa";
-import { List, ListItem, ListItemPrefix } from "@material-tailwind/react";
-import { useNavigate } from "react-router";
+import { List, ListItem, ListItemPrefix } from "@material-tailwind/react"
+import React, { useState } from "react"
+import { FaBars, FaCogs, FaHome } from "react-icons/fa"
+import { useNavigate } from "react-router"
 
 function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -24,7 +24,7 @@ function Navbar() {
           <List>
             <ListItem
               className="hover:bg-gray-800 rounded-lg"
-              onClick={() => navigate("/home")}
+              onClick={() => navigate("/")}
             >
               <ListItemPrefix>
                 <FaHome className="text-black text-xl" />

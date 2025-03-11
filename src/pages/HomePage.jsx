@@ -1,15 +1,15 @@
-import React, {useEffect, useState} from "react";
-import io from "socket.io-client";
-import {useNavigate} from "react-router-dom";
 import {
+  Button,
   Card,
   CardBody,
   CardFooter,
-  Typography,
-  Button,
   CardHeader,
-} from "@material-tailwind/react";
-import {Message} from "../components/index.js";
+  Typography,
+} from "@material-tailwind/react"
+import React, { useEffect, useState } from "react"
+import { useNavigate } from "react-router-dom"
+import io from "socket.io-client"
+import { Message } from "../components/index.js"
 
 export default function HomePage() {
   const [symbolData, setSymbolData] = useState([]);
@@ -19,6 +19,7 @@ export default function HomePage() {
     api_sec: '',
     type: '',
     amount: '',
+    signal_type: '',
     trading_view_login: '',
     trading_view_password: '',
     trading_view_chart_link: ''
@@ -26,7 +27,7 @@ export default function HomePage() {
   const [isEdited, setIsEdited] = useState(false);
   const [isEditable, setIsEditable] = useState(false);
   const [originalData, setOriginalData] = useState({});
-
+  const role = localStorage.getItem("role")
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -46,7 +47,7 @@ export default function HomePage() {
       try {
         const token = localStorage.getItem("token");
 
-        const response = await fetch("http://localhost:8000/api/getkeys", {
+        const response = await fetch("https://api.primexalgo.com/api/getkeys", {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -77,7 +78,7 @@ export default function HomePage() {
   }, []);
 
   useEffect(() => {
-    const socket = io("http://localhost:8000");
+    const socket = io("https://api.primexalgo.com");
     socket.on("connect", () => console.log("Socket.IO connection established"));
     socket.on("data", (data) => setSymbolData(data.data));
     socket.on("error", (error) => console.error("Socket.IO error:", error));
@@ -113,9 +114,10 @@ export default function HomePage() {
 
     const token = localStorage.getItem("token");
 
-    const apiUrl = "http://localhost:8000/api/postkey";
+    const apiUrl = "http://localhost:8001/api/postkey";
     console.log(data);
-
+    console.log(data.signal_type);
+    
     fetch(apiUrl, {
       method: "POST",
       headers: {
@@ -125,6 +127,7 @@ export default function HomePage() {
       body: JSON.stringify({
         api_key: data.api_key,
         api_sec: data.api_sec,
+        signal_type: data.signal_type,
         trading_view_login: data.trading_view_login,
         trading_view_password: data.trading_view_password,
         trading_view_chart_link: data.trading_view_chart_link,
@@ -175,7 +178,7 @@ export default function HomePage() {
     try {
       const token = localStorage.getItem("token");
 
-      const response = await fetch("http://localhost:8000/api/close_positions", {
+      const response = await fetch("https://api.primexalgo.com/api/close_positions", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -204,51 +207,67 @@ export default function HomePage() {
   };
 
   const renderField = (field, label) => {
+    if (role !== 'vip' && field === 'signal_type') {
+      return null;
+    }
+
+    if (role === 'essential' && (field === 'trading_view_login' || field === 'trading_view_password' || field === 'trading_view_chart_link')) {
+      return null;
+    }
+  
+
     return (
-        <div className="flex flex-wrap items-center w-full mb-2">
-          <Typography
-              variant="h5"
-              className="mr-4 w-1/4 min-w-[100px] text-sm"
-          >
-            {label}:
-          </Typography>
-          <div className="flex-1 min-w-[200px]">
-            {field === "type" ? (
-                isEditable ? (
-                    <select
-                        name={field}
-                        value={data[field]}
-                        onChange={handleChange}
-                        className="w-full text-gray-800 px-2 py-1 text-sm border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-                    >
-                      <option value="spot">spot</option>
-                      <option value="future">future</option>
-                    </select>
+      <div className="flex flex-wrap items-center w-full mb-2">
+        <Typography variant="h5" className="mr-4 w-1/4 min-w-[100px] text-sm">
+          {label}:
+        </Typography>
+        <div className="flex-1 min-w-[200px]">
+          {field === "type" || field === "signal_type" ? (
+            isEditable ? (
+              <select
+                name={field}
+                value={data[field]}
+                onChange={handleChange}
+                className="w-full text-gray-800 px-2 py-1 text-sm border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+              >
+                {field === "type" ? (
+                  <>
+                    <option value="spot">spot</option>
+                    <option value="future">future</option>
+                  </>
                 ) : (
-                    <span className="block w-full text-gray-800 px-2 py-1 text-sm border rounded-lg overflow-hidden whitespace-nowrap text-ellipsis">
-                            {data[field] || `No ${label} provided`}
-                        </span>
-                )
+                  <>
+                    <option value="manual">Manual</option>
+                    <option value="server">From Server</option>
+                  </>
+                )}
+              </select>
             ) : (
-                isEditable ? (
-                    <input
-                        type="text"
-                        name={field}
-                        value={data[field]}
-                        onChange={handleChange}
-                        className="w-full text-gray-800 px-2 py-1 text-sm border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-                        placeholder={`Enter your ${label.toLowerCase()}`}
-                    />
-                ) : (
-                    <span className="block w-full text-gray-800 px-2 py-1 text-sm border rounded-lg overflow-hidden whitespace-nowrap text-ellipsis">
-                            {data[field] || `No ${label} provided`}
-                        </span>
-                )
-            )}
-          </div>
+              <span className="block w-full text-gray-800 px-2 py-1 text-sm border rounded-lg overflow-hidden whitespace-nowrap text-ellipsis">
+                {data[field] || `No ${label} provided`}
+              </span>
+            )
+          ) : (
+            isEditable ? (
+              <input
+                type="text"
+                name={field}
+                value={data[field]}
+                onChange={handleChange}
+                className="w-full text-gray-800 px-2 py-1 text-sm border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+                placeholder={`Enter your ${label.toLowerCase()}`}
+              />
+            ) : (
+              <span className="block w-full text-gray-800 px-2 py-1 text-sm border rounded-lg overflow-hidden whitespace-nowrap text-ellipsis">
+                {data[field] || `No ${label} provided`}
+              </span>
+            )
+          )}
         </div>
+      </div>
     );
   };
+  
 
   return (
       <div className="flex flex-col gap-16 p-4 sm:p-8">
@@ -259,6 +278,7 @@ export default function HomePage() {
               {renderField('api_sec', 'Secret Key')}
               {renderField('type', 'Trade Type')}
               {renderField('amount', 'Amount')}
+              {renderField('signal_type', 'Signal Type')}
               {renderField('trading_view_login', 'Trading View Login')}
               {renderField('trading_view_password', 'Trading View Password')}
               {renderField('trading_view_chart_link', 'Chart Link')}

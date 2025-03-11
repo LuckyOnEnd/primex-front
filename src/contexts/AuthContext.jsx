@@ -1,5 +1,5 @@
-import React, { createContext, useState, useEffect } from "react";
-import { useNavigate } from "react-router";
+import React, { createContext, useEffect, useState } from "react"
+import { useNavigate } from "react-router"
 
 const AuthContext = createContext();
 
@@ -16,7 +16,7 @@ export const AuthProvider = ({ children }) => {
 
     const login = async (values) => {
         try {
-            const response = await fetch("http://localhost:8000/api/auth", {
+            const response = await fetch("https://api.primexalgo.com/api/auth", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
