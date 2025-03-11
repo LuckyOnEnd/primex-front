@@ -114,7 +114,7 @@ export default function HomePage() {
 
     const token = localStorage.getItem("token");
 
-    const apiUrl = "http://localhost:8001/api/postkey";
+    const apiUrl = "http://localhost:8000/api/postkey";
     console.log(data);
     console.log(data.signal_type);
     
