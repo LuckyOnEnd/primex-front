@@ -47,7 +47,7 @@ export default function HomePage() {
       try {
         const token = localStorage.getItem("token");
 
-        const response = await fetch("https://api.primexalgo.com/api/getkeys", {
+        const response = await fetch("http://localhost:8000/api/getkeys", {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -78,7 +78,7 @@ export default function HomePage() {
   }, []);
 
   useEffect(() => {
-    const socket = io("https://api.primexalgo.com");
+    const socket = io("http://localhost:8000");
     socket.on("connect", () => console.log("Socket.IO connection established"));
     socket.on("data", (data) => setSymbolData(data.data));
     socket.on("error", (error) => console.error("Socket.IO error:", error));
@@ -178,7 +178,7 @@ export default function HomePage() {
     try {
       const token = localStorage.getItem("token");
 
-      const response = await fetch("https://api.primexalgo.com/api/close_positions", {
+      const response = await fetch("http://localhost:8000/api/close_positions", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

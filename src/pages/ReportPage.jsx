@@ -35,7 +35,7 @@ export default function ReportPage() {
 
     const generate = (values) => {
         const token = localStorage.getItem("token");
-        const apiUrl = "https://api.primexalgo.com/api/report";
+        const apiUrl = "http://localhost:8000/api/report";
 
         fetch(apiUrl, {
             method: "POST",

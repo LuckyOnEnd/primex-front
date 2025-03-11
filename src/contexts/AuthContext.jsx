@@ -16,7 +16,7 @@ export const AuthProvider = ({ children }) => {
 
     const login = async (values) => {
         try {
-            const response = await fetch("https://api.primexalgo.com/api/auth", {
+            const response = await fetch("http://localhost:8000/api/auth", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

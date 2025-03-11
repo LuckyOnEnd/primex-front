@@ -21,7 +21,7 @@ const SettingPage = () => {
       try {
         const token = localStorage.getItem("token");
 
-        const response = await fetch("https://api.primexalgo.com/api/getkeys", {
+        const response = await fetch("http://localhost:8000/api/getkeys", {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -55,7 +55,7 @@ const SettingPage = () => {
 
     const token = localStorage.getItem("token");
 
-    const apiUrl = "https://api.primexalgo.com/api/postkey";
+    const apiUrl = "http://localhost:8000/api/postkey";
     fetch(apiUrl, {
       method: "POST",
       headers: {

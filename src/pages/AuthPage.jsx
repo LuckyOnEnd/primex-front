@@ -9,7 +9,7 @@ const AuthPage = () => {
     const [alert, setAlert] = useState(null);
 
     const onFinish = (values) => {
-        const apiUrl = "https://api.primexalgo.com/api/auth";
+        const apiUrl = "http://localhost:8000/api/auth";
 
         fetch(apiUrl, {
             method: "POST",
