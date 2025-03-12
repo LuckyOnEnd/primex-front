@@ -39,6 +39,11 @@ const AuthPage = () => {
             });
     };
 
+    const handleSignUpClick = (e) => {
+        e.preventDefault(); // Предотвращаем поведение формы
+        window.location.assign("https://primexalgo.com/signup.html");
+    };
+
     const onFinishFailed = (errorInfo) => {
         setAlert({ message: "Error", description: "Form validation failed", type: "error" });
     };
@@ -84,6 +89,16 @@ const AuthPage = () => {
                             style={{ width: "100%" }}
                         >
                             Login
+                        </Button>
+                    </Form.Item>
+                    <Form.Item>
+                        <Button
+                            type="default"
+                            onClick={handleSignUpClick}
+                            className="w-full"
+                            style={{ width: "100%" }}
+                        >
+                            Sign Up
                         </Button>
                     </Form.Item>
                 </Form>
