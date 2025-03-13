@@ -101,7 +101,7 @@ const SettingPage = () => {
     setData({
       api_key: "",
       api_sec: "",
-      type: "",
+      order_type: "",
       amount: 0,
       signal_type: "",
       trading_view_login: "",
@@ -160,7 +160,7 @@ const SettingPage = () => {
                       initialValues={{
                         api_key: data.api_key,
                         api_sec: data.api_sec,
-                        type: data.type,
+                        order_type: data.order_type,
                         amount: data.amount,
                         signal_type: data.signal_type,
                         trading_view_login: data.trading_view_login,

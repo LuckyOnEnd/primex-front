@@ -132,7 +132,7 @@ export default function HomePage() {
         trading_view_password: data.trading_view_password,
         trading_view_chart_link: data.trading_view_chart_link,
         amount: data.amount,
-        type: data.type,
+        order_type: data.order_type,
       }),
     })
         .then((response) => {
@@ -222,7 +222,7 @@ export default function HomePage() {
           {label}:
         </Typography>
         <div className="flex-1 min-w-[200px]">
-          {field === "type" || field === "signal_type" ? (
+          {field === "order_type" || field === "signal_type" ? (
             isEditable ? (
               <select
                 name={field}
@@ -230,7 +230,7 @@ export default function HomePage() {
                 onChange={handleChange}
                 className="w-full text-gray-800 px-2 py-1 text-sm border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
               >
-                {field === "type" ? (
+                {field === "order_type" ? (
                   <>
                     <option value="spot">spot</option>
                     <option value="future">future</option>
@@ -276,7 +276,7 @@ export default function HomePage() {
             <div className="flex flex-wrap gap-2">
               {renderField('api_key', 'Api Key')}
               {renderField('api_sec', 'Secret Key')}
-              {renderField('type', 'Trade Type')}
+              {renderField('order_type', 'Trade Type')}
               {renderField('amount', 'Amount')}
               {renderField('signal_type', 'Signal Type')}
               {renderField('trading_view_login', 'Trading View Login')}
@@ -363,7 +363,7 @@ export default function HomePage() {
                                 <td className="border border-gray-700 px-4 py-2 font-medium">{item.Symbol || "Loading..."}</td>
                                 <td className="border border-gray-700 px-4 py-2 font-medium">{item.Signal || "Loading..."}</td>
                                 <td className="border border-gray-700 px-4 py-2 font-medium">{item.Price || "Loading..."}</td>
-                                <td className="border border-gray-700 px-4 py-2 font-medium">{item.type || "Loading..."}</td>
+                                <td className="border border-gray-700 px-4 py-2 font-medium">{item.order_type || "Loading..."}</td>
                                 <td className="border border-gray-700 px-4 py-2 font-medium">{item.Time || "Loading..."}</td>
                                 <td className="border border-gray-700 px-4 py-2 font-medium">{item.commission || "Loading..."}</td>
                                 <td className="border border-gray-700 px-4 py-2 font-medium">
