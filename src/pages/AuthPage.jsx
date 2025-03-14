@@ -40,8 +40,8 @@ const AuthPage = () => {
     };
 
     const handleSignUpClick = (e) => {
-        e.preventDefault(); // Предотвращаем поведение формы
-        window.location.assign("https://primexalgo.com/signup.html");
+        e.preventDefault();
+        window.open("https://primexalgo.com/signup.html", "_blank");
     };
 
     const onFinishFailed = (errorInfo) => {
