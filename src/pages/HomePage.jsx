@@ -17,7 +17,7 @@ export default function HomePage() {
   const [data, setData] = useState({
     api_key: '',
     api_sec: '',
-    type: '',
+    order_type: '',
     amount: '',
     signal_type: '',
     trading_view_login: '',

@@ -41,8 +41,9 @@ const AuthPage = () => {
 
     const handleSignUpClick = (e) => {
         e.preventDefault();
-        window.open("https://primexalgo.com/signup.html", "_blank");
+        window.open("https://primexalgo.com/signup.html", "_blank", "width=800,height=600");
     };
+
 
     const onFinishFailed = (errorInfo) => {
         setAlert({ message: "Error", description: "Form validation failed", type: "error" });
