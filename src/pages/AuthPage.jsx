@@ -27,7 +27,8 @@ const AuthPage = () => {
             .then((data) => {
                 if (data.token) {
                     localStorage.setItem("token", data.token);
-                    localStorage.setItem("role", data.subscription_type)
+                    localStorage.setItem("role", data.subscription_type);
+                    localStorage.setItem("email", values.user_id); // Сохраняем user_id как email
                     setAlert({ message: "Success", description: "Login successful", type: "success" });
                     setTimeout(() => navigate("/"), 200);
                 } else {
@@ -43,7 +44,6 @@ const AuthPage = () => {
         e.preventDefault();
         window.open("https://primexalgo.com/signup.html", "_blank", "width=800,height=600");
     };
-
 
     const onFinishFailed = (errorInfo) => {
         setAlert({ message: "Error", description: "Form validation failed", type: "error" });

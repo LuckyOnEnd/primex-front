@@ -27,7 +27,8 @@ export default function HomePage() {
   const [isEdited, setIsEdited] = useState(false);
   const [isEditable, setIsEditable] = useState(false);
   const [originalData, setOriginalData] = useState({});
-  const role = localStorage.getItem("role")
+  const role = localStorage.getItem("role");
+  const email = localStorage.getItem("email");
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -79,15 +80,29 @@ export default function HomePage() {
 
   useEffect(() => {
     const socket = io("http://localhost:8000");
-    socket.on("connect", () => console.log("Socket.IO connection established"));
-    socket.on("data", (data) => setSymbolData(data.data));
+
+    socket.on("connect", () => {
+      console.log("Socket.IO connection established");
+      console.log("Sending email to server:", email); // Отладка
+      if (email) {
+        socket.emit("join", { email });
+      } else {
+        console.error("No email found in localStorage");
+      }
+    });
+
+    socket.on("data", (data) => {
+      console.log("Received data from server:", data); // Отладка
+      setSymbolData(data.data);
+    });
+
     socket.on("error", (error) => console.error("Socket.IO error:", error));
     socket.on("disconnect", () => console.log("Socket.IO connection closed"));
 
     return () => {
       socket.disconnect();
     };
-  }, []);
+  }, [email]);
 
   const handleChange = (e) => {
     const {name, value} = e.target;
@@ -117,7 +132,7 @@ export default function HomePage() {
     const apiUrl = "http://localhost:8000/api/postkey";
     console.log(data);
     console.log(data.signal_type);
-    
+
     fetch(apiUrl, {
       method: "POST",
       headers: {
@@ -174,6 +189,7 @@ export default function HomePage() {
         });
   };
 
+
   const handleCloseAllOrders = async () => {
     try {
       const token = localStorage.getItem("token");
@@ -207,67 +223,61 @@ export default function HomePage() {
   };
 
   const renderField = (field, label) => {
-    if (role !== 'vip' && field === 'signal_type') {
-      return null;
-    }
-
-    if (role === 'essential' && (field === 'trading_view_login' || field === 'trading_view_password' || field === 'trading_view_chart_link')) {
-      return null;
-    }
-  
+    if (role !== 'vip' && field === 'signal_type') return null;
+    if (role === 'essential' && (field === 'trading_view_login' || field === 'trading_view_password' || field === 'trading_view_chart_link')) return null;
 
     return (
-      <div className="flex flex-wrap items-center w-full mb-2">
-        <Typography variant="h5" className="mr-4 w-1/4 min-w-[100px] text-sm">
-          {label}:
-        </Typography>
-        <div className="flex-1 min-w-[200px]">
-          {field === "order_type" || field === "signal_type" ? (
-            isEditable ? (
-              <select
-                name={field}
-                value={data[field]}
-                onChange={handleChange}
-                className="w-full text-gray-800 px-2 py-1 text-sm border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-              >
-                {field === "order_type" ? (
-                  <>
-                    <option value="spot">spot</option>
-                    <option value="future">future</option>
-                  </>
+        <div className="flex flex-wrap items-center w-full mb-2">
+          <Typography variant="h5" className="mr-4 w-1/4 min-w-[100px] text-sm">
+            {label}:
+          </Typography>
+          <div className="flex-1 min-w-[200px]">
+            {field === "order_type" || field === "signal_type" ? (
+                isEditable ? (
+                    <select
+                        name={field}
+                        value={data[field]}
+                        onChange={(e) => setData(prev => ({ ...prev, [field]: e.target.value }))}
+                        className="w-full text-gray-800 px-2 py-1 text-sm border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+                    >
+                      {field === "order_type" ? (
+                          <>
+                            <option value="spot">spot</option>
+                            <option value="future">future</option>
+                          </>
+                      ) : (
+                          <>
+                            <option value="manual">Manual</option>
+                            <option value="server">From Server</option>
+                          </>
+                      )}
+                    </select>
                 ) : (
-                  <>
-                    <option value="manual">Manual</option>
-                    <option value="server">From Server</option>
-                  </>
-                )}
-              </select>
-            ) : (
-              <span className="block w-full text-gray-800 px-2 py-1 text-sm border rounded-lg overflow-hidden whitespace-nowrap text-ellipsis">
+                    <span className="block w-full text-gray-800 px-2 py-1 text-sm border rounded-lg overflow-hidden whitespace-nowrap text-ellipsis">
                 {data[field] || `No ${label} provided`}
               </span>
-            )
-          ) : (
-            isEditable ? (
-              <input
-                type="text"
-                name={field}
-                value={data[field]}
-                onChange={handleChange}
-                className="w-full text-gray-800 px-2 py-1 text-sm border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-                placeholder={`Enter your ${label.toLowerCase()}`}
-              />
+                )
             ) : (
-              <span className="block w-full text-gray-800 px-2 py-1 text-sm border rounded-lg overflow-hidden whitespace-nowrap text-ellipsis">
+                isEditable ? (
+                    <input
+                        type="text"
+                        name={field}
+                        value={data[field]}
+                        onChange={(e) => setData(prev => ({ ...prev, [field]: e.target.value }))}
+                        className="w-full text-gray-800 px-2 py-1 text-sm border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+                        placeholder={`Enter your ${label.toLowerCase()}`}
+                    />
+                ) : (
+                    <span className="block w-full text-gray-800 px-2 py-1 text-sm border rounded-lg overflow-hidden whitespace-nowrap text-ellipsis">
                 {data[field] || `No ${label} provided`}
               </span>
-            )
-          )}
+                )
+            )}
+          </div>
         </div>
-      </div>
     );
   };
-  
+
 
   return (
       <div className="flex flex-col gap-16 p-4 sm:p-8">
