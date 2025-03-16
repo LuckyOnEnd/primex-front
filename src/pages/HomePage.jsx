@@ -366,7 +366,6 @@ export default function HomePage() {
                       <tbody>
                       {symbolData
                           .slice()
-                          .reverse()
                           .map((item, index) => (
                               <tr key={index} className="hover:bg-gray-50 text-gray-600 hover:text-black">
                                 <td className="border border-gray-700 px-4 py-2 font-medium">{symbolData.length - index}</td>
