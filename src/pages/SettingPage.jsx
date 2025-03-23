@@ -99,8 +99,8 @@ const SettingPage = () => {
 
   const handleManageKeysClick = () => {
     setData({
-      api_key: "",
-      api_sec: "",
+      account: "",
+      password: "",
       order_type: "",
       amount: 0,
       signal_type: "",
@@ -158,8 +158,8 @@ const SettingPage = () => {
                         maxWidth: "100%",
                       }}
                       initialValues={{
-                        api_key: data.api_key,
-                        api_sec: data.api_sec,
+                        account: data.account,
+                        password: data.api_sec,
                         order_type: data.order_type,
                         amount: data.amount,
                         signal_type: data.signal_type,
@@ -172,12 +172,12 @@ const SettingPage = () => {
                       autoComplete="off"
                   >
                     <Form.Item
-                        label={<span className="text-black">Api_key</span>}
-                        name="api_key"
+                        label={<span className="text-black">Account</span>}
+                        name="account"
                         rules={[
                           {
                             required: true,
-                            message: "Please input your Binance Api_key!",
+                            message: "Please input your account!",
                           },
                         ]}
                     >
@@ -185,12 +185,12 @@ const SettingPage = () => {
                     </Form.Item>
 
                     <Form.Item
-                        label={<span className="text-black">Secret_key</span>}
-                        name="api_sec"
+                        label={<span className="text-black">Password</span>}
+                        name="password"
                         rules={[
                           {
                             required: true,
-                            message: "Please input your Binance Secret!",
+                            message: "Please input your MT5 Password!",
                           },
                         ]}
                     >

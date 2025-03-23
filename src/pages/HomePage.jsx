@@ -284,9 +284,9 @@ export default function HomePage() {
         <Card className="w-full bg-white text-black">
           <CardBody>
             <div className="flex flex-wrap gap-2">
-              {renderField('api_key', 'Api Key')}
-              {renderField('api_sec', 'Secret Key')}
-              {renderField('order_type', 'Trade Type')}
+              {renderField('api_key', 'Account')}
+              {renderField('api_sec', 'Password')}
+              {renderField('order_type', 'Server')}
               {renderField('amount', 'Amount')}
               {renderField('signal_type', 'Signal Type')}
               {renderField('trading_view_login', 'Trading View Login')}
